@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../models/news_model.dart';
 import 'dio.dart';
 
 class NewsService {
-  static const String _apiKey =
-      "9dcd530a238941e1b00a46e47aebfc8d"; // 🔑 replace this with your real key
+  final _apiKey = dotenv.env['API_KEY'];
 
   final Dio _dio = DioClient().dio;
 

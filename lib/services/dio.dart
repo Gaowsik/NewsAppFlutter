@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart' show Dio, BaseOptions, LogInterceptor;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DioClient {
   DioClient._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: "https://newsapi.org/",
+        baseUrl: dotenv.env['BASE_URL']!,
         connectTimeout: Duration(milliseconds: 10000),
         receiveTimeout: Duration(milliseconds: 3000),
       ),
