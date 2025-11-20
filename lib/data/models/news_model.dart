@@ -1,7 +1,9 @@
+import '../../domain/article.dart';
+
 class NewsResponse {
   final String status;
   final int totalResults;
-  final List<Article> articles;
+  final List<ArticleResponse> articles;
 
   NewsResponse({
     required this.status,
@@ -14,7 +16,7 @@ class NewsResponse {
       status: json['status'] ?? '',
       totalResults: json['totalResults'] ?? 0,
       articles: (json['articles'] as List<dynamic>?)
-          ?.map((e) => Article.fromJson(e))
+          ?.map((e) => ArticleResponse.fromJson(e))
           .toList() ??
           [],
     );
@@ -29,7 +31,7 @@ class NewsResponse {
   }
 }
 
-class Article {
+class ArticleResponse {
   final Source? source;
   final String? author;
   final String? title;
@@ -39,7 +41,7 @@ class Article {
   final String? publishedAt;
   final String? content;
 
-  Article({
+  ArticleResponse({
     this.source,
     this.author,
     this.title,
@@ -50,8 +52,8 @@ class Article {
     this.content,
   });
 
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return Article(
+  factory ArticleResponse.fromJson(Map<String, dynamic> json) {
+    return ArticleResponse(
       source:
       json['source'] != null ? Source.fromJson(json['source']) : null,
       author: json['author'],
@@ -75,6 +77,17 @@ class Article {
       'publishedAt': publishedAt,
       'content': content,
     };
+  }
+
+
+  Article toDomainModel() {
+    return Article(
+      title: title ?? '',
+      description: description ?? '',
+      url: url,
+      imageUrl: urlToImage ?? '',
+      publishedDate: publishedAt ?? '',
+    );
   }
 }
 
