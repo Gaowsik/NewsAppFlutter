@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../services/news_service.dart';
+import '../data/repositoryImpl/news_repository_impl.dart';
+import '../data/services/news_service.dart';
 import 'bloc/news_bloc.dart';
 import 'bloc/news_event.dart';
 import 'bloc/news_state.dart';
@@ -13,7 +14,8 @@ class NewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          NewsBloc(newsService: NewsService())..add(FetchNews()),
+          NewsBloc(newsRepository: NewsRepositoryImpl(NewsService()))
+            ..add(FetchNews()),
       child: Scaffold(
         appBar: AppBar(title: const Text("Top Headlines")),
         body: BlocBuilder<NewsBloc, NewsState>(
@@ -43,15 +45,13 @@ class NewsScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final article = articles[index];
                     return ListTile(
-                      leading: article.urlToImage != null
-                          ? Image.network(
-                              article.urlToImage!,
-                              width: 60,
-                              fit: BoxFit.cover,
-                            )
-                          : const Icon(Icons.article),
+                      leading: Image.network(
+                        article.imageUrl,
+                        width: 60,
+                        fit: BoxFit.cover,
+                      ),
                       title: Text(article.title ?? 'No title'),
-                      subtitle: Text(article.source?.name ?? 'Unknown source'),
+                      subtitle: Text(article.publishedDate ?? 'Unknown source'),
                     );
                   },
                 ),
