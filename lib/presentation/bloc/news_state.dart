@@ -8,6 +8,8 @@ import '../../data/models/news_model.dart';
 abstract class NewsState extends Equatable {
   @override
   List<Object?> get props => [];
+
+  get articles => null;
 }
 
 class NewsInitial extends NewsState {}
