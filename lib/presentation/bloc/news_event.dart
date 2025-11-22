@@ -6,3 +6,8 @@ class FetchNews extends NewsEvent {
 
   FetchNews({this.country = 'us', this.loadMore = false});
 }
+
+class ToggleFavourite extends NewsEvent {
+  final String url;
+  ToggleFavourite(this.url);
+}

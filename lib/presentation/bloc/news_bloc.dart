@@ -14,7 +14,25 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
   NewsBloc({required this.newsRepository}) : super(NewsInitial()) {
     on<FetchNews>(_onFetchNews);
+
+    on<ToggleFavourite>((ToggleFavourite event, Emitter<NewsState> emit) {
+      if (state is NewsLoaded) {
+        final currentState = state as NewsLoaded;
+
+        final updatedArticles = currentState.articles.map((article) {
+          if (article.url == event.url) {
+            return article.copyWith(isFavourite: !article.isFavourite);
+          }
+          return article;
+        }).toList();
+
+        emit(NewsLoaded(
+          articles: updatedArticles
+        ));
+      }
+    });
   }
+
 
   get currentState => null;
 
@@ -50,4 +68,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       _isLoading = false;
     }
   }
+
+
+
 }

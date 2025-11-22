@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:untitled/presentation/util/network_image_widget.dart';
 
 import 'bloc/news_bloc.dart';
 import 'bloc/news_event.dart';
@@ -40,10 +41,9 @@ class NewsScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final article = articles[index];
                   return ListTile(
-                    leading: Image.network(
-                      article.imageUrl,
+                    leading: NetworkImageWidget(
+                      imageUrl: article.imageUrl,
                       width: 60,
-                      fit: BoxFit.cover,
                     ),
                     title: Text(article.title ?? 'No title'),
                     subtitle: Text(article.publishedDate ?? 'Unknown source'),
