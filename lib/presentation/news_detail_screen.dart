@@ -63,7 +63,7 @@ class NewsDetailScreen extends StatelessWidget {
                       IconButton(
                         onPressed: () {
                           context.read<NewsBloc>().add(
-                            ToggleFavourite(article!.url),
+                            ToggleFavourite(article!),
                           );
                         },
                         icon: Icon(

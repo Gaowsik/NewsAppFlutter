@@ -1,3 +1,5 @@
+import '../../domain/article.dart';
+
 abstract class NewsEvent {}
 
 class FetchNews extends NewsEvent {
@@ -8,6 +10,6 @@ class FetchNews extends NewsEvent {
 }
 
 class ToggleFavourite extends NewsEvent {
-  final String url;
-  ToggleFavourite(this.url);
+  final Article article;
+  ToggleFavourite(this.article);
 }

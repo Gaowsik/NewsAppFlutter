@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-import '../../data/services/news_service.dart';
 import '../../domain/repository/news_repository.dart';
 import 'news_event.dart';
 import 'news_state.dart';
@@ -15,29 +13,40 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   NewsBloc({required this.newsRepository}) : super(NewsInitial()) {
     on<FetchNews>(_onFetchNews);
 
-    on<ToggleFavourite>((ToggleFavourite event, Emitter<NewsState> emit) {
+    on<ToggleFavourite>((ToggleFavourite event, Emitter<NewsState> emit) async {
       if (state is NewsLoaded) {
         final currentState = state as NewsLoaded;
 
         final updatedArticles = currentState.articles.map((article) {
-          if (article.url == event.url) {
+          if (article.url == event.article.url) {
             return article.copyWith(isFavourite: !article.isFavourite);
           }
           return article;
         }).toList();
 
-        emit(NewsLoaded(
-          articles: updatedArticles
-        ));
+        final toggledArticle = updatedArticles.firstWhere(
+          (a) => a.url == event.article.url,
+        );
+        try {
+          if (toggledArticle.isFavourite) {
+            await newsRepository.saveFavourite(toggledArticle);
+          } else {
+            await newsRepository.removeFavourite(toggledArticle.url);
+          }
+        } catch (e) {
+          emit(NewsError(errorMessage: "Failed to update favourite "+e.toString()));
+          return;
+        }
+
+        emit(NewsLoaded(articles: updatedArticles));
       }
     });
   }
 
-
   get currentState => null;
 
   Future<void> _onFetchNews(FetchNews event, Emitter<NewsState> emit) async {
-    if (_isLoading) return;  // Prevent multiple calls
+    if (_isLoading) return; // Prevent multiple calls
     _isLoading = true;
     try {
       emit(NewsLoading());
@@ -58,17 +67,11 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
         return;
       }
 
-
       emit(NewsLoaded(articles: response, isLastPage: false));
-
-
     } catch (error) {
-      emit(NewsError(errorMessage: "Something Went Wrong"));
-    }finally {
+      emit(NewsError(errorMessage: error.toString()));
+    } finally {
       _isLoading = false;
     }
   }
-
-
-
 }

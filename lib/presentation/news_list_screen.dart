@@ -47,6 +47,12 @@ class NewsScreen extends StatelessWidget {
                     ),
                     title: Text(article.title ?? 'No title'),
                     subtitle: Text(article.publishedDate ?? 'Unknown source'),
+                    trailing: Icon(
+                      article.isFavourite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: article.isFavourite ? Colors.red : Colors.grey,
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
