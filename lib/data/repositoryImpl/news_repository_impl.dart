@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:untitled/domain/article.dart';
 
 import '../../domain/repository/news_repository.dart';

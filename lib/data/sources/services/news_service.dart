@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:injectable/injectable.dart';
 
 import '../../models/news_model.dart';
 import 'dio.dart';

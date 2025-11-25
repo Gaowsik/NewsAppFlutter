@@ -1,4 +1,5 @@
 import 'package:hive_flutter/adapters.dart';
+import 'package:injectable/injectable.dart';
 import 'package:untitled/domain/article.dart';
 
 import '../../../utils/app_strings.dart';
