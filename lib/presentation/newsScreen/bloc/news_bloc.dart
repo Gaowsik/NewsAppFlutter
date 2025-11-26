@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/repository/news_repository.dart';
+import '../../../domain/repository/news_repository.dart';
 import 'news_event.dart';
 import 'news_state.dart';
 

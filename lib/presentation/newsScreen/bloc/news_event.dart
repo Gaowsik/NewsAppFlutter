@@ -1,4 +1,6 @@
-import '../../domain/article.dart';
+
+
+import '../../../domain/article.dart';
 
 abstract class NewsEvent {}
 

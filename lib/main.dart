@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:untitled/presentation/bloc/news_bloc.dart';
-import 'package:untitled/presentation/bloc/news_event.dart';
-import 'package:untitled/presentation/news_list_screen.dart';
+import 'package:untitled/presentation/favouriteScreen/bloc/favourite_news_bloc.dart';
+import 'package:untitled/presentation/main_home_screen.dart';
+import 'package:untitled/presentation/newsScreen/bloc/news_bloc.dart';
+import 'package:untitled/presentation/newsScreen/bloc/news_event.dart';
+import 'package:untitled/presentation/newsScreen/news_list_screen.dart';
 import 'package:untitled/utils/app_strings.dart';
 
 import 'data/sources/local/entities/article_entity.dart';
@@ -26,15 +28,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          getIt<NewsBloc>()..add(FetchNews()), // fetch news on app start
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => getIt<NewsBloc>()..add(FetchNews()),
+        ),
+        BlocProvider(
+          create: (_) => getIt<FavouriteNewsBloc>(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const NewsScreen(),
+        home: MainHomeScreen(),
       ),
     );
   }
