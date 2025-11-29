@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/repository/news_repository.dart';
+import '../../newsScreen/bloc/news_event.dart';
 import 'favourite_news_event.dart';
 import 'favourite_news_state.dart';
 
@@ -12,6 +13,42 @@ class FavouriteNewsBloc extends Bloc<FavouriteNewsEvent, FavouriteNewsState> {
 
   FavouriteNewsBloc({required this.newsRepository}) : super(NewsInitial()) {
     on<GetFavouriteNews>(_onGetFavouriteNews);
+
+    on<ToggleFavouriteInFavouriteDetail>((
+        ToggleFavouriteInFavouriteDetail event,
+      Emitter<FavouriteNewsState> emit,
+    ) async {
+      if (state is FavouriteNewsLoaded) {
+        final currentState = state as FavouriteNewsLoaded;
+
+        final updatedArticles = currentState.articles.map((article) {
+          if (article.url == event.article.url) {
+            return article.copyWith(isFavourite: !article.isFavourite);
+          }
+          return article;
+        }).toList();
+
+        final toggledArticle = updatedArticles.firstWhere(
+          (a) => a.url == event.article.url,
+        );
+        try {
+          if (toggledArticle.isFavourite) {
+            await newsRepository.saveFavourite(toggledArticle);
+          } else {
+            await newsRepository.removeFavourite(toggledArticle.url);
+          }
+        } catch (e) {
+          emit(
+            FavouriteNewsError(
+              errorMessage: "Failed to update favourite " + e.toString(),
+            ),
+          );
+          return;
+        }
+
+        emit(FavouriteNewsLoaded(articles: updatedArticles));
+      }
+    });
   }
 
   Future<void> _onGetFavouriteNews(
