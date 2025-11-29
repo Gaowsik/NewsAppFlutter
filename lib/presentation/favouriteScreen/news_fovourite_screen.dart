@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/presentation/favouriteScreen/bloc/favourite_news_bloc.dart';
 import 'package:untitled/presentation/favouriteScreen/bloc/favourite_news_state.dart';
+import 'package:untitled/presentation/favouriteScreen/favourite_news_detail_screen.dart';
 
-import '../newsScreen/news_detail_screen.dart';
 import '../util/network_image_widget.dart';
 import 'bloc/favourite_news_event.dart';
 
@@ -13,7 +13,7 @@ class NewsFavouriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<FavouriteNewsBloc>();
-    if (bloc.state is NewsInitial) {
+    if (bloc.state is NewsInitial || bloc.state is FavouriteNewsLoaded) {
       bloc.add(GetFavouriteNews());
     }
     return Scaffold(
@@ -54,9 +54,12 @@ class NewsFavouriteScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
-                            NewsDetailScreen(articleUrl: article.url),
+                            FavouriteNewsDetailScreen(articleUrl: article.url),
                       ),
-                    );
+                    ).then((_) {
+                      // This block runs when returning from SecondScreen
+                      context.read<FavouriteNewsBloc>().add(GetFavouriteNews());
+                    });
                   },
                 );
               },
