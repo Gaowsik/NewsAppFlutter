@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:untitled/domain/article.dart';
 
 import '../../../utils/app_strings.dart';
-import 'entities/article_entity.dart';
+import 'entities/article/article_entity.dart';
 import 'favourite_local_data_source.dart';
 
 class FavouriteLocalDataSourceImpl implements FavouriteLocalDataSource {

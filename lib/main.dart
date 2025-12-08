@@ -9,7 +9,7 @@ import 'package:untitled/presentation/newsScreen/bloc/news_event.dart';
 import 'package:untitled/presentation/newsScreen/news_list_screen.dart';
 import 'package:untitled/utils/app_strings.dart';
 
-import 'data/sources/local/entities/article_entity.dart';
+import 'data/sources/local/entities/article/article_entity.dart';
 import 'di/injection.dart';
 
 Future<void> main() async {

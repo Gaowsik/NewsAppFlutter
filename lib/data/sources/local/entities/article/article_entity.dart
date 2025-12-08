@@ -1,6 +1,6 @@
 import 'package:hive_flutter/adapters.dart';
 
-import '../../../../domain/article.dart';
+import '../../../../../domain/article.dart';
 
 part 'article_entity.g.dart';
 
